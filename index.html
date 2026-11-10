@@ -1,49 +1,150 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Journey | UX220 Assignment 2</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">Your Name Here</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04"
-                aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
 
-            <div class="collapse navbar-collapse" id="navbarsExample04">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <h1>Assignment 2</h1>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#home" class="logo">My Journey.</a>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#experiences">My Experiences</a></li>
+            <li><a href="#about">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="home" class="hero">
+
+        <p class="subtitle">UX220 · ASSIGNMENT 2</p>
+
+        <h1>The Experiences That Shaped Me</h1>
+
+        <p>
+            Looking back at the experiences that helped me grow,
+            learn new skills, and discover what I want for my future.
+        </p>
+
+        <a href="#experiences" class="button">
+            Explore My Journey
+        </a>
+
     </header>
-    <main>
-        <section><x-markdown2html src="items/experience_1.md" id="section_1"></x-markdown2html></section>
-        <section><x-markdown2html src="items/experience_2.md" id="section_2"></x-markdown2html></section>
-        <section><x-markdown2html src="items/experience_3.md" id="section_3"></x-markdown2html></section>
-        <section><x-markdown2html src="items/experience_4.md" id="section_4"></x-markdown2html></section>
-        <section><x-markdown2html src="items/experience_5.md" id="section_5"></x-markdown2html></section>
-        <section><x-markdown2html src="contact.md" id="contact"></x-markdown2html></section>
-        <section><x-markdown2html src="about.md" id="about"></x-markdown2html></section>
-    </main>
-    <footer>
-        <p>Your name here</p>
-    </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-        crossorigin="anonymous"></script>
-    <script src="https://custom-element.pages.dev/custom-element.js" crossorigin="anonymous"></script>
-</body>
 
+    <!-- Experiences Section -->
+    <main id="experiences" class="container">
+
+        <div class="section-heading">
+
+            <p class="subtitle">MY PERSONAL JOURNEY</p>
+
+            <h2>Five Experiences, Five Lessons</h2>
+
+            <p>
+                Each experience has taught me something different
+                and helped shape the person I am today.
+            </p>
+
+        </div>
+
+        <div id="items-container" class="experiences-grid">
+            <p>Loading my experiences...</p>
+        </div>
+
+    </main>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+
+        <h2>Looking Back, Moving Forward</h2>
+
+        <p>
+            Every experience has taught me something valuable.
+            Whether it was working with customers, helping others,
+            studying UX design, or exploring my own business ideas,
+            each step has helped me understand my strengths and
+            what I want to work towards in the future.
+        </p>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+
+        <p>My Journey · UX220 Assignment 2</p>
+
+        <p>Wilfrid Laurier University · 2026</p>
+
+    </footer>
+
+    <!-- Load Markdown Experiences -->
+    <script>
+
+        const experiences = [
+            "01-aldo.md",
+            "02-frontline.md",
+            "03-voice-logic.md",
+            "04-ux-design.md",
+            "05-decor-blossom.md"
+        ];
+
+        const container = document.getElementById("items-container");
+
+        async function loadExperiences() {
+
+            container.innerHTML = "";
+
+            for (const file of experiences) {
+
+                try {
+
+                    const response = await fetch("items/" + file);
+
+                    if (!response.ok) {
+                        throw new Error("Could not load " + file);
+                    }
+
+                    const markdown = await response.text();
+
+                    const article = document.createElement("article");
+
+                    article.className = "experience-card";
+
+                    article.innerHTML = marked.parse(markdown);
+
+                    container.appendChild(article);
+
+                } catch (error) {
+
+                    console.error(error);
+
+                    const message = document.createElement("p");
+
+                    message.textContent = "Could not load " + file;
+
+                    container.appendChild(message);
+
+                }
+
+            }
+
+        }
+
+        loadExperiences();
+
+    </script>
+
+</body>
 </html>
